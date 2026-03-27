@@ -4,7 +4,9 @@
 #   Actions: balance.others, give, add, take, remove, set, reset, clear, top
 
 settings:
+  # How often (seconds) dirty player data is flushed to the database
   auto-save-interval: 300
+  # How often (seconds) the /top leaderboard cache is refreshed
   top-cache-refresh: 300
 
 database:
@@ -17,6 +19,22 @@ messages:
   amount-too-large: "&cThat amount exceeds the maximum allowed balance."
   console-must-specify-player: "&cConsole must specify a player."
 
+# ─────────────────────────────────────────────────────────────
+# Currency message placeholders:
+#
+#   {player}               - target player's name
+#   {symbol}               - currency symbol (e.g. $)
+#   {display-name}         - currency display name (e.g. Money)
+#   {currency}             - currency id (e.g. money)
+#   {amount}               - the amount involved, formatted with decimals (e.g. 1,500,000.00)
+#   {formatted}            - the amount in compact notation (e.g. 1.5M)
+#   {new_balance}          - player's balance after the action, formatted with decimals
+#   {new_balance_formatted}- player's balance after the action in compact notation
+#   {default}              - currency's default balance, formatted with decimals
+#   {limit}                - top list size (top-header only)
+#   {rank}                 - player rank (top-entry only)
+# ─────────────────────────────────────────────────────────────
+
 currencies:
   money:
     display-name: "&6Money"
@@ -26,17 +44,17 @@ currencies:
     max-balance: -1
     decimals: 2
     messages:
-      balance-self: "&aYour balance: &6{symbol}{amount}"
-      balance-other: "&a{player}'s balance: &6{symbol}{amount}"
-      given: "&aGave &6{symbol}{amount}&a to &6{player}&a."
-      taken: "&aTook &6{symbol}{amount}&a from &6{player}&a."
-      set: "&aSet &6{player}&a's balance to &6{symbol}{amount}&a."
+      balance-self: "&aYour balance: &6{symbol}{amount} &7({formatted})"
+      balance-other: "&a{player}'s balance: &6{symbol}{amount} &7({formatted})"
+      given: "&aGave &6{symbol}{amount} &7({formatted})&a to &6{player}&a."
+      taken: "&aTook &6{symbol}{amount} &7({formatted})&a from &6{player}&a."
+      set: "&aSet &6{player}&a's balance to &6{symbol}{amount} &7({formatted})&a."
       reset: "&aReset &6{player}&a's balance to the default (&6{symbol}{default}&a)."
       cleared: "&aCleared &6{player}&a's balance."
-      received-give: "&aAn admin gave you &6{symbol}{amount}&a."
-      received-take: "&cAn admin took &6{symbol}{amount}&c from you."
+      received-give: "&aAn admin gave you &6{symbol}{amount} &7({formatted})&a."
+      received-take: "&cAn admin took &6{symbol}{amount} &7({formatted})&c from you."
       top-header: "&6&l--- Top {limit} {display-name} ---"
-      top-entry: "&6#{rank} &e{player} &7- &6{symbol}{amount}"
+      top-entry: "&6#{rank} &e{player} &7- &6{symbol}{amount} &7({formatted})"
       top-footer: "&6&m                              "
       top-empty: "&cNo balance data found yet."
 
@@ -48,16 +66,16 @@ currencies:
     max-balance: -1
     decimals: 0
     messages:
-      balance-self: "&aYour tokens: &b{amount}{symbol}"
-      balance-other: "&a{player}'s tokens: &b{amount}{symbol}"
-      given: "&aGave &b{amount}{symbol}&a to &6{player}&a."
-      taken: "&aTook &b{amount}{symbol}&a from &6{player}&a."
-      set: "&aSet &6{player}&a's tokens to &b{amount}{symbol}&a."
+      balance-self: "&aYour tokens: &b{amount}{symbol} &7({formatted})"
+      balance-other: "&a{player}'s tokens: &b{amount}{symbol} &7({formatted})"
+      given: "&aGave &b{amount}{symbol} &7({formatted})&a to &6{player}&a."
+      taken: "&aTook &b{amount}{symbol} &7({formatted})&a from &6{player}&a."
+      set: "&aSet &6{player}&a's tokens to &b{amount}{symbol} &7({formatted})&a."
       reset: "&aReset &6{player}&a's tokens to the default (&b{default}{symbol}&a)."
       cleared: "&aCleared &6{player}&a's tokens."
-      received-give: "&aAn admin gave you &b{amount}{symbol}&a."
-      received-take: "&cAn admin took &b{amount}{symbol}&c from you."
+      received-give: "&aAn admin gave you &b{amount}{symbol} &7({formatted})&a."
+      received-take: "&cAn admin took &b{amount}{symbol} &7({formatted})&c from you."
       top-header: "&b&l--- Top {limit} {display-name} ---"
-      top-entry: "&b#{rank} &e{player} &7- &b{amount}{symbol}"
+      top-entry: "&b#{rank} &e{player} &7- &b{amount}{symbol} &7({formatted})"
       top-footer: "&b&m                              "
       top-empty: "&cNo token data found yet."

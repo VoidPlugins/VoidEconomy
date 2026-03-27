@@ -187,7 +187,9 @@ public class CurrencyCommand extends Command {
                  .replace("{default}", currency.formatAmount(currency.getDefaultBalance()))
                  .replace("{symbol}", currency.getSymbol())
                  .replace("{currency}", currency.getId())
-                 .replace("{display-name}", currency.getDisplayName());
+                 .replace("{display-name}", currency.getDisplayName())
+                 .replace("{formatted}", MessageUtil.formatCompact(amount))
+                 .replace("{new_balance_formatted}", MessageUtil.formatCompact(newBalance));
         return MessageUtil.colorize(raw);
     }
 

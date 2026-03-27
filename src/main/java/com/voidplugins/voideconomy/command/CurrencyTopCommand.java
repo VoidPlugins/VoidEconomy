@@ -55,6 +55,7 @@ public class CurrencyTopCommand extends Command {
                             .replace("{rank}", String.valueOf(entry.rank()))
                             .replace("{player}", entry.playerName())
                             .replace("{amount}", currency.formatAmount(entry.balance()))
+                            .replace("{formatted}", MessageUtil.formatCompact(entry.balance()))
                             .replace("{symbol}", currency.getSymbol())
                             .replace("{display-name}", currency.getDisplayName());
                     sender.sendMessage(MessageUtil.colorize(line));

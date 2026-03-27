@@ -80,13 +80,14 @@ public class PayCommand implements CommandExecutor, TabCompleter {
             plugin.getAPI().remove(payer.getUniqueId(), currencyId, amount).thenCompose(payerBalance ->
                     plugin.getAPI().give(target.getUniqueId(), currencyId, amount)
             ).thenAccept(targetBalance -> Bukkit.getScheduler().runTask(plugin, () -> {
+                String compact = MessageUtil.formatCompact(amount);
                 payer.sendMessage(MessageUtil.colorize(
                         "&aPaid &6" + currency.getSymbol() + currency.formatAmount(amount)
-                        + " &a(" + currency.getDisplayName() + "&a) to &6" + target.getName() + "&a."));
+                        + " &7(" + compact + ")&a to &6" + target.getName() + "&a."));
                 target.sendMessage(MessageUtil.colorize(
-                        "&a" + payer.getName() + " &apaid you &6"
+                        "&6" + payer.getName() + " &apaid you &6"
                         + currency.getSymbol() + currency.formatAmount(amount)
-                        + " &a(" + currency.getDisplayName() + "&a)."));
+                        + " &7(" + compact + ")&a."));
             }));
         });
 
