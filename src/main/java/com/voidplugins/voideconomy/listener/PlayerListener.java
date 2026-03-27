@@ -35,13 +35,9 @@ public class PlayerListener implements Listener {
         }
     }
 
-    /**
-     * Save player data on quit and remove from cache.
-     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        // Save async so we don't block the main thread
         plugin.getPlayerStore().savePlayer(uuid);
     }
 }

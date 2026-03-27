@@ -14,10 +14,10 @@ import java.util.List;
  * Placeholder format: %voideconomy_<placeholder>%
  *
  * Available placeholders:
- *   %voideconomy_<currency>%                       → own balance (formatted)
- *   %voideconomy_<currency>_raw%                   → own balance (raw number)
- *   %voideconomy_<currency>_top_<rank>_name%       → name of rank-N player
- *   %voideconomy_<currency>_top_<rank>_balance%    → balance of rank-N player (formatted)
+ *   %voideconomy_<currency>%                        → own balance (formatted)
+ *   %voideconomy_<currency>_raw%                    → own balance (raw number)
+ *   %voideconomy_<currency>_top_<rank>_name%        → name of rank-N player
+ *   %voideconomy_<currency>_top_<rank>_balance%     → balance of rank-N player (formatted)
  *   %voideconomy_<currency>_top_<rank>_balance_raw% → balance of rank-N player (raw)
  */
 public class VoidEconomyExpansion extends PlaceholderExpansion {
@@ -36,7 +36,6 @@ public class VoidEconomyExpansion extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        // params is the part after "voideconomy_"
         String[] parts = params.split("_", -1);
         if (parts.length == 0) return null;
 
@@ -44,7 +43,6 @@ public class VoidEconomyExpansion extends PlaceholderExpansion {
         Currency currency = plugin.getCurrencyManager().getById(currencyId);
         if (currency == null) return null;
 
-        // %voideconomy_<currency>%  or  %voideconomy_<currency>_raw%
         if (parts.length == 1) {
             return getFormattedBalance(player, currency, false);
         }
@@ -53,7 +51,6 @@ public class VoidEconomyExpansion extends PlaceholderExpansion {
             return getFormattedBalance(player, currency, true);
         }
 
-        // %voideconomy_<currency>_top_<rank>_<field>%
         if (parts.length >= 4 && parts[1].equals("top")) {
             int rank;
             try {
@@ -88,7 +85,7 @@ public class VoidEconomyExpansion extends PlaceholderExpansion {
             return raw ? String.valueOf(balance) : currency.formatAmount(balance);
         }
 
-        // For offline players, PlaceholderAPI may call this — return default
+        // Offline players have no live data; return the default to avoid a blocking DB call
         return raw ? String.valueOf(currency.getDefaultBalance())
                    : currency.formatAmount(currency.getDefaultBalance());
     }

@@ -11,7 +11,7 @@ public class CurrencyManager {
     private final Map<String, Currency> byId = new LinkedHashMap<>();
     private final Map<String, Currency> byCommand = new ConcurrentHashMap<>();
 
-    // Top cache: currencyId -> list of top entries, refreshed periodically
+    // currencyId -> cached top list, refreshed periodically
     private final Map<String, List<TopEntry>> topCache = new ConcurrentHashMap<>();
 
     public CurrencyManager(VoidEconomy plugin) {

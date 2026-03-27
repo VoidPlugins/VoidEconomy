@@ -29,17 +29,11 @@ public class CurrencyChangeEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    /** The reason a currency balance changed. */
     public enum Reason {
-        /** Balance increased via give/add. */
         GIVE,
-        /** Balance decreased via take/remove. */
         REMOVE,
-        /** Balance was set to an exact value. */
         SET,
-        /** Balance was reset to the currency's default. */
         RESET,
-        /** Balance was cleared (set to 0). */
         CLEAR
     }
 
@@ -61,16 +55,9 @@ public class CurrencyChangeEvent extends Event implements Cancellable {
         this.reason = reason;
     }
 
-    /** The UUID of the player whose balance changed. */
     public UUID getPlayerUUID() { return playerUUID; }
-
-    /** The name of the player at the time of the change. */
     public String getPlayerName() { return playerName; }
-
-    /** The currency that was changed. */
     public Currency getCurrency() { return currency; }
-
-    /** The balance before the change. */
     public double getOldBalance() { return oldBalance; }
 
     /**
@@ -81,8 +68,6 @@ public class CurrencyChangeEvent extends Event implements Cancellable {
 
     /**
      * Override the resulting balance. The value is clamped to [0, max-balance].
-     *
-     * @param newBalance the desired new balance
      */
     public void setNewBalance(double newBalance) {
         if (newBalance < 0) newBalance = 0;
@@ -92,10 +77,9 @@ public class CurrencyChangeEvent extends Event implements Cancellable {
         this.newBalance = newBalance;
     }
 
-    /** The reason this change occurred. */
     public Reason getReason() { return reason; }
 
-    /** The net change in balance (newBalance - oldBalance). */
+    /** Net change in balance (newBalance - oldBalance). */
     public double getDelta() { return newBalance - oldBalance; }
 
     @Override public boolean isCancelled() { return cancelled; }

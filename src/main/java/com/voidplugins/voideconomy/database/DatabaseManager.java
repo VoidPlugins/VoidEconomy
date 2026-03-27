@@ -86,8 +86,6 @@ public class DatabaseManager {
         }
     }
 
-    // ── Load all balances for a player ──────────────────────────────────────
-
     public CompletableFuture<Map<String, Double>> loadBalances(UUID uuid) {
         return CompletableFuture.supplyAsync(() -> {
             Map<String, Double> result = new HashMap<>();
@@ -104,8 +102,6 @@ public class DatabaseManager {
             return result;
         }, executor);
     }
-
-    // ── Save all balances for a player (batch upsert) ────────────────────────
 
     public CompletableFuture<Void> saveBalances(UUID uuid, String username, Map<String, Double> balances) {
         if (balances.isEmpty()) return CompletableFuture.completedFuture(null);
@@ -138,8 +134,6 @@ public class DatabaseManager {
             }
         }, executor);
     }
-
-    // ── Single balance operations (for offline players) ──────────────────────
 
     public CompletableFuture<Double> getBalance(UUID uuid, String currencyId, double defaultBalance) {
         return CompletableFuture.supplyAsync(() -> {
@@ -177,8 +171,6 @@ public class DatabaseManager {
         }, executor);
     }
 
-    // ── Top list query ───────────────────────────────────────────────────────
-
     public CompletableFuture<List<TopEntry>> getTop(String currencyId, int limit) {
         return CompletableFuture.supplyAsync(() -> {
             List<TopEntry> result = new ArrayList<>();
@@ -198,8 +190,6 @@ public class DatabaseManager {
             return result;
         }, executor);
     }
-
-    // ── Look up a UUID by player name (for offline admin commands) ───────────
 
     public CompletableFuture<UUID> findUUIDByName(String name) {
         return CompletableFuture.supplyAsync(() -> {

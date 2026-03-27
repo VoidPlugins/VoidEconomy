@@ -1,20 +1,15 @@
 # VoidEconomy Configuration
-# Dynamic currencies: add any currency here and its commands will be registered automatically.
 # Each currency gets: /<command>, /<command>top
 # Permissions: voideconomy.<currency_id>.<action>
 #   Actions: balance.others, give, add, take, remove, set, reset, clear, top
 
 settings:
-  # How often (in seconds) dirty player data is flushed to the database
   auto-save-interval: 300
-  # How often (in seconds) the top-list cache is refreshed
   top-cache-refresh: 300
 
 database:
-  # SQLite database file name (relative to plugin folder)
   file: "economy.db"
 
-# Global messages (used when no per-currency override exists)
 messages:
   no-permission: "&cYou don't have permission to do this."
   player-not-found: "&cPlayer &e{player}&c was not found."
@@ -22,19 +17,13 @@ messages:
   amount-too-large: "&cThat amount exceeds the maximum allowed balance."
   console-must-specify-player: "&cConsole must specify a player."
 
-# Define your currencies below.
-# The key (e.g. "money") becomes the currency ID used in permissions.
 currencies:
   money:
     display-name: "&6Money"
     symbol: "$"
-    # The command players type (e.g. /money, /moneytop)
     command: "money"
-    # Starting balance for new players
     default-balance: 0.0
-    # Maximum allowed balance (-1 = unlimited)
     max-balance: -1
-    # Decimal places shown when formatting amounts
     decimals: 2
     messages:
       balance-self: "&aYour balance: &6{symbol}{amount}"

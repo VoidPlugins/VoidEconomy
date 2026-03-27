@@ -33,7 +33,6 @@ public class CurrencyCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
         if (args.length == 0) {
-            // /<currency> → own balance
             if (!(sender instanceof Player player)) {
                 sender.sendMessage(msg("console-must-specify-player"));
                 return true;
@@ -45,12 +44,10 @@ public class CurrencyCommand extends Command {
         String first = args[0].toLowerCase();
 
         if (ADMIN_ACTIONS.contains(first)) {
-            // /<currency> <action> <player> [amount]
             handleAdminAction(sender, first, args);
             return true;
         }
 
-        // /<currency> <player> → view their balance
         if (!sender.hasPermission("voideconomy." + currency.getId() + ".balance.others")) {
             sender.sendMessage(msg("no-permission"));
             return true;
@@ -166,20 +163,16 @@ public class CurrencyCommand extends Command {
         }
     }
 
-    // ── Player resolution (checks online → cached offline → database) ─────────
-
+    // Resolves online → cached offline → database
     private CompletableFuture<ResolvedPlayer> resolvePlayer(CommandSender sender, String name) {
-        // 1. Online
         Player online = Bukkit.getPlayerExact(name);
         if (online != null) {
             return CompletableFuture.completedFuture(new ResolvedPlayer(online.getUniqueId(), online.getName()));
         }
-        // 2. Cached offline
         OfflinePlayer cached = Bukkit.getOfflinePlayerIfCached(name);
         if (cached != null && cached.getName() != null) {
             return CompletableFuture.completedFuture(new ResolvedPlayer(cached.getUniqueId(), cached.getName()));
         }
-        // 3. Database lookup
         return plugin.getDatabaseManager().findUUIDByName(name).thenApply(uuid -> {
             if (uuid == null) {
                 Bukkit.getScheduler().runTask(plugin,
@@ -189,8 +182,6 @@ public class CurrencyCommand extends Command {
             return new ResolvedPlayer(uuid, name);
         });
     }
-
-    // ── Message helpers ───────────────────────────────────────────────────────
 
     private String msg(String globalKey) {
         return MessageUtil.colorize(
@@ -208,8 +199,6 @@ public class CurrencyCommand extends Command {
                  .replace("{display-name}", currency.getDisplayName());
         return MessageUtil.colorize(raw);
     }
-
-    // ── Tab completion ─────────────────────────────────────────────────────────
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) {

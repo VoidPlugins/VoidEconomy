@@ -17,8 +17,6 @@ public class PlayerStore {
         this.plugin = plugin;
     }
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
-
     public CompletableFuture<Void> loadPlayer(UUID uuid, String username) {
         return plugin.getDatabaseManager().loadBalances(uuid).thenAccept(balances -> {
             PlayerData data = new PlayerData(uuid, username);
@@ -64,7 +62,6 @@ public class PlayerStore {
                 ? plugin.getConfigManager().getAutoSaveInterval() * 20
                 : 20 * 300;
 
-        // Auto-save task (async)
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             for (PlayerData data : cache.values()) {
                 if (data.isDirty()) {
@@ -75,7 +72,6 @@ public class PlayerStore {
             }
         }, interval, interval);
 
-        // Top-cache refresh task (async)
         int topRefresh = plugin.getConfigManager().getTopCacheRefresh() * 20;
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             for (Currency currency : plugin.getCurrencyManager().getCurrencies()) {
@@ -113,9 +109,7 @@ public class PlayerStore {
         });
     }
 
-    // ── Balance access ────────────────────────────────────────────────────────
-
-    /** Get balance. Uses cache for online players, queries DB for offline. */
+    /** Uses cache for online players, queries DB for offline. */
     public CompletableFuture<Double> getBalance(UUID uuid, String username, String currencyId) {
         PlayerData data = cache.get(uuid);
         if (data != null) {
@@ -128,7 +122,7 @@ public class PlayerStore {
         return plugin.getDatabaseManager().getBalance(uuid, currencyId, def);
     }
 
-    /** Set balance. Updates cache for online players, writes DB directly for offline. */
+    /** Updates cache for online players, writes DB directly for offline. */
     public CompletableFuture<Void> setBalance(UUID uuid, String username, String currencyId, double amount) {
         PlayerData data = cache.get(uuid);
         if (data != null) {

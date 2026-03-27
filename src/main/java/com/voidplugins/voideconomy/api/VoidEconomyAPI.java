@@ -49,40 +49,23 @@ public final class VoidEconomyAPI {
     }
 
     /**
-     * Returns the shared API instance.
-     *
      * @return the API instance, or {@code null} if VoidEconomy is not loaded
      */
     public static VoidEconomyAPI getInstance() {
         return instance;
     }
 
-    // ── Currency lookup ───────────────────────────────────────────────────────
-
-    /**
-     * Returns true if a currency with the given ID is configured.
-     *
-     * @param currencyId the currency ID (e.g. "money", "tokens")
-     */
     public boolean hasCurrency(String currencyId) {
         return plugin.getCurrencyManager().getById(currencyId) != null;
     }
 
-    /**
-     * Returns the {@link Currency} object for a given ID, or {@code null} if not found.
-     */
     public Currency getCurrency(String currencyId) {
         return plugin.getCurrencyManager().getById(currencyId);
     }
 
-    /**
-     * Returns all registered currencies.
-     */
     public Collection<Currency> getCurrencies() {
         return plugin.getCurrencyManager().getCurrencies();
     }
-
-    // ── Get ───────────────────────────────────────────────────────────────────
 
     /**
      * Gets a player's balance for the given currency.
@@ -101,14 +84,9 @@ public final class VoidEconomyAPI {
         return plugin.getPlayerStore().getBalance(uuid, name, currencyId);
     }
 
-    /**
-     * Convenience overload using an {@link OfflinePlayer}.
-     */
     public CompletableFuture<Double> getBalance(OfflinePlayer player, String currencyId) {
         return getBalance(player.getUniqueId(), currencyId);
     }
-
-    // ── Give / Add ────────────────────────────────────────────────────────────
 
     /**
      * Adds {@code amount} to a player's balance, capped at the currency's max-balance.
@@ -143,14 +121,9 @@ public final class VoidEconomyAPI {
         });
     }
 
-    /**
-     * Convenience overload using an {@link OfflinePlayer}.
-     */
     public CompletableFuture<Double> give(OfflinePlayer player, String currencyId, double amount) {
         return give(player.getUniqueId(), currencyId, amount);
     }
-
-    // ── Remove / Take ─────────────────────────────────────────────────────────
 
     /**
      * Subtracts {@code amount} from a player's balance (floor at 0).
@@ -181,14 +154,9 @@ public final class VoidEconomyAPI {
         });
     }
 
-    /**
-     * Convenience overload using an {@link OfflinePlayer}.
-     */
     public CompletableFuture<Double> remove(OfflinePlayer player, String currencyId, double amount) {
         return remove(player.getUniqueId(), currencyId, amount);
     }
-
-    // ── Set ───────────────────────────────────────────────────────────────────
 
     /**
      * Sets a player's balance to an exact value.
@@ -216,46 +184,30 @@ public final class VoidEconomyAPI {
         });
     }
 
-    /**
-     * Convenience overload using an {@link OfflinePlayer}.
-     */
     public CompletableFuture<Void> set(OfflinePlayer player, String currencyId, double amount) {
         return set(player.getUniqueId(), currencyId, amount);
     }
-
-    // ── Clear (set to 0) ──────────────────────────────────────────────────────
 
     /**
      * Sets a player's balance to 0.
      *
      * <p>Fires a {@link CurrencyChangeEvent} that can be cancelled by other plugins.
      *
-     * @param uuid       the player UUID
-     * @param currencyId the currency ID
-     * @return a future that completes when the change is applied
      * @throws IllegalArgumentException if the currency is unknown
      */
     public CompletableFuture<Void> clear(UUID uuid, String currencyId) {
         return set(uuid, currencyId, 0.0);
     }
 
-    /**
-     * Convenience overload using an {@link OfflinePlayer}.
-     */
     public CompletableFuture<Void> clear(OfflinePlayer player, String currencyId) {
         return clear(player.getUniqueId(), currencyId);
     }
-
-    // ── Reset (set to default) ────────────────────────────────────────────────
 
     /**
      * Resets a player's balance to the currency's configured default.
      *
      * <p>Fires a {@link CurrencyChangeEvent} that can be cancelled by other plugins.
      *
-     * @param uuid       the player UUID
-     * @param currencyId the currency ID
-     * @return a future that completes when the change is applied
      * @throws IllegalArgumentException if the currency is unknown
      */
     public CompletableFuture<Void> reset(UUID uuid, String currencyId) {
@@ -263,34 +215,20 @@ public final class VoidEconomyAPI {
         return set(uuid, currencyId, currency.getDefaultBalance());
     }
 
-    /**
-     * Convenience overload using an {@link OfflinePlayer}.
-     */
     public CompletableFuture<Void> reset(OfflinePlayer player, String currencyId) {
         return reset(player.getUniqueId(), currencyId);
     }
 
-    // ── Has enough ────────────────────────────────────────────────────────────
-
     /**
      * Returns a future resolving to {@code true} if the player has at least {@code amount}.
-     *
-     * @param uuid       the player UUID
-     * @param currencyId the currency ID
-     * @param amount     the minimum balance to check for
      */
     public CompletableFuture<Boolean> has(UUID uuid, String currencyId, double amount) {
         return getBalance(uuid, currencyId).thenApply(balance -> balance >= amount);
     }
 
-    /**
-     * Convenience overload using an {@link OfflinePlayer}.
-     */
     public CompletableFuture<Boolean> has(OfflinePlayer player, String currencyId, double amount) {
         return has(player.getUniqueId(), currencyId, amount);
     }
-
-    // ── Internal helpers ──────────────────────────────────────────────────────
 
     private Currency requireCurrency(String currencyId) {
         Currency currency = plugin.getCurrencyManager().getById(currencyId);
@@ -303,10 +241,8 @@ public final class VoidEconomyAPI {
     }
 
     private String resolveName(UUID uuid) {
-        // Check cache first (online players)
         var cached = plugin.getPlayerStore().getCached(uuid);
         if (cached != null) return cached.getUsername();
-        // Fall back to Bukkit's offline cache
         OfflinePlayer op = Bukkit.getOfflinePlayerIfCached(uuid.toString()) != null
                 ? Bukkit.getOfflinePlayer(uuid) : null;
         return (op != null && op.getName() != null) ? op.getName() : "Unknown";

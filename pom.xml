@@ -27,6 +27,28 @@
           <target>${java.version}</target>
         </configuration>
       </plugin>
+      <!-- Builds a separate -api.jar containing only the public API classes.
+           Developers depend on this JAR (provided scope); the full plugin runs on the server. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version>
+        <executions>
+          <execution>
+            <id>api-jar</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <classifier>api</classifier>
+              <includes>
+                <include>com/voidplugins/voideconomy/api/**</include>
+                <include>com/voidplugins/voideconomy/currency/Currency.class</include>
+                <include>com/voidplugins/voideconomy/currency/CurrencyManager$TopEntry.class</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
