@@ -1,7 +1,7 @@
 # VoidEconomy Configuration
 # Each currency gets: /<command>, /<command>top
 # Permissions: voideconomy.<currency_id>.<action>
-#   Actions: balance.others, give, add, take, remove, set, reset, clear, top
+#   Actions: balance.others, give, add, take, remove, set, reset, clear, top, withdraw
 
 settings:
   # How often (seconds) dirty player data is flushed to the database
@@ -18,21 +18,22 @@ messages:
   invalid-amount: "&cInvalid amount. Please enter a positive number."
   amount-too-large: "&cThat amount exceeds the maximum allowed balance."
   console-must-specify-player: "&cConsole must specify a player."
+  withdraw-inventory-full: "&cYour inventory was full. The note was dropped at your feet."
 
 # ─────────────────────────────────────────────────────────────
 # Currency message placeholders:
 #
-#   {player}               - target player's name
-#   {symbol}               - currency symbol (e.g. $)
-#   {display-name}         - currency display name (e.g. Money)
-#   {currency}             - currency id (e.g. money)
-#   {amount}               - the amount involved, formatted with decimals (e.g. 1,500,000.00)
-#   {formatted}            - the amount in compact notation (e.g. 1.5M)
-#   {new_balance}          - player's balance after the action, formatted with decimals
-#   {new_balance_formatted}- player's balance after the action in compact notation
-#   {default}              - currency's default balance, formatted with decimals
-#   {limit}                - top list size (top-header only)
-#   {rank}                 - player rank (top-entry only)
+#   {player}                - target player's name
+#   {symbol}                - currency symbol (e.g. $)
+#   {display-name}          - currency display name (e.g. Money)
+#   {currency}              - currency id (e.g. money)
+#   {amount}                - the amount involved, formatted with decimals (e.g. 1,500,000.00)
+#   {formatted}             - the amount in compact notation (e.g. 1.5M)
+#   {new_balance}           - player's balance after the action, formatted with decimals
+#   {new_balance_formatted} - player's balance after the action in compact notation
+#   {default}               - currency's default balance, formatted with decimals
+#   {limit}                 - top list size (top-header only)
+#   {rank}                  - player rank (top-entry only)
 # ─────────────────────────────────────────────────────────────
 
 currencies:
@@ -57,6 +58,21 @@ currencies:
       top-entry: "&6#{rank} &e{player} &7- &6{symbol}{amount} &7({formatted})"
       top-footer: "&6&m                              "
       top-empty: "&cNo balance data found yet."
+      withdraw-success: "&aWithdrew &6{symbol}{amount} &7({formatted})&a from your balance."
+      withdraw-not-enough: "&cYou don't have enough &6{display-name}&c to withdraw that amount."
+      withdraw-disabled: "&cWithdraw is disabled for &6{display-name}&c."
+      deposit-success: "&aDeposited &6{symbol}{amount} &7({formatted})&a into your balance."
+    withdraw:
+      enabled: true
+      # Permission: voideconomy.money.withdraw
+      material: PAPER
+      # custom-model-data: 0  # Uncomment and set for resource pack support
+      name: "&6{symbol}{amount} &7({formatted}) &6Note"
+      lore:
+        - "&7Currency: &6{display-name}"
+        - "&7Amount: &6{symbol}{amount} &7({formatted})"
+        - ""
+        - "&eRight-click to deposit"
 
   tokens:
     display-name: "&bTokens"
@@ -79,3 +95,16 @@ currencies:
       top-entry: "&b#{rank} &e{player} &7- &b{amount}{symbol} &7({formatted})"
       top-footer: "&b&m                              "
       top-empty: "&cNo token data found yet."
+      withdraw-success: "&aWithdrew &b{amount}{symbol} &7({formatted})&a from your balance."
+      withdraw-not-enough: "&cYou don't have enough &b{display-name}&c to withdraw that amount."
+      withdraw-disabled: "&cWithdraw is disabled for &b{display-name}&c."
+      deposit-success: "&aDeposited &b{amount}{symbol} &7({formatted})&a into your balance."
+    withdraw:
+      enabled: true
+      material: SUNFLOWER
+      name: "&b{amount}{symbol} &7({formatted}) &bToken Note"
+      lore:
+        - "&7Currency: &b{display-name}"
+        - "&7Amount: &b{amount}{symbol} &7({formatted})"
+        - ""
+        - "&eRight-click to deposit"

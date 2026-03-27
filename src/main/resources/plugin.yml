@@ -16,6 +16,10 @@ commands:
     description: Pay another player
     usage: /pay <player> <currency> <amount>
     permission: voideconomy.pay
+  withdraw:
+    description: Withdraw currency as a physical item
+    usage: /withdraw <currency> <amount>
+    permission: voideconomy.*.withdraw
 
 permissions:
   voideconomy.info:

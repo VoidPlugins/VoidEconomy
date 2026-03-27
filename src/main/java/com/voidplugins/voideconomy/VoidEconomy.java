@@ -12,6 +12,8 @@ import com.voidplugins.voideconomy.placeholder.VoidEconomyExpansion;
 import com.voidplugins.voideconomy.store.PlayerStore;
 import com.voidplugins.voideconomy.command.PayCommand;
 import com.voidplugins.voideconomy.command.VoidEconomyCommand;
+import com.voidplugins.voideconomy.command.WithdrawCommand;
+import com.voidplugins.voideconomy.listener.WithdrawListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -65,7 +67,12 @@ public final class VoidEconomy extends JavaPlugin {
         getCommand("pay").setExecutor(payCmd);
         getCommand("pay").setTabCompleter(payCmd);
 
+        WithdrawCommand withdrawCmd = new WithdrawCommand(this);
+        getCommand("withdraw").setExecutor(withdrawCmd);
+        getCommand("withdraw").setTabCompleter(withdrawCmd);
+
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new WithdrawListener(this), this);
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new VoidEconomyExpansion(this).register();
