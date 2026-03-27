@@ -44,7 +44,7 @@ public final class VoidEconomyAPI {
         this.plugin = plugin;
     }
 
-    static void init(VoidEconomy plugin) {
+    public static void init(VoidEconomy plugin) {
         instance = new VoidEconomyAPI(plugin);
     }
 

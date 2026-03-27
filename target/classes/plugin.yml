@@ -1,0 +1,8 @@
+name: VoidEconomy
+version: '1.0.0'
+main: com.voidplugins.voideconomy.VoidEconomy
+api-version: '1.21'
+description: A flexible economy plugin with configurable currencies
+author: VoidPlugins
+softdepend:
+  - PlaceholderAPI
