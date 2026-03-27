@@ -86,7 +86,7 @@ Restart the server — `/crystals` and `/crystalstop` are registered automatical
     <dependency>
         <groupId>com.github.VoidPlugins</groupId>
         <artifactId>VoidEconomy</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <classifier>api</classifier>
         <scope>provided</scope>
     </dependency>
@@ -100,7 +100,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.VoidPlugins:VoidEconomy:1.0.0:api'
+    compileOnly 'com.github.VoidPlugins:VoidEconomy:1.0.1:api'
 }
 ```
 
@@ -111,7 +111,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.VoidPlugins:VoidEconomy:1.0.0:api")
+    compileOnly("com.github.VoidPlugins:VoidEconomy:1.0.1:api")
 }
 ```
 
