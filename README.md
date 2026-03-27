@@ -6,9 +6,10 @@ A flexible economy plugin for Spigot/Paper (1.21.1+) with fully configurable cur
 
 - Unlimited configurable currencies (money, tokens, crystals, ...)
 - Per-currency commands: `/money`, `/tokens`, `/moneytop`, etc.
+- Human-friendly amount input: `1k`, `1.5m`, `1b`, `1t`, `1q`, `1qt`, ...
 - SQLite with WAL mode — safe for high-frequency balance updates
 - In-memory player cache with automatic database sync
-- PlaceholderAPI support
+- PlaceholderAPI support with compact formatting
 - Developer API with cancellable events
 
 ## Commands & Permissions
@@ -25,6 +26,29 @@ Replace `<currency>` with the currency ID (e.g. `money`, `tokens`).
 | `/<currency> reset <player>` | Reset to default | `voideconomy.<currency>.reset` |
 | `/<currency> clear <player>` | Set to 0 | `voideconomy.<currency>.clear` |
 | `/<currency>top` | Top 10 richest players | `voideconomy.<currency>.top` |
+| `/pay <player> <currency> <amount>` | Pay another player | `voideconomy.pay` |
+| `/voideconomy` | List all currencies and commands | `voideconomy.info` |
+| `/voideconomy reload` | Reload the config | `voideconomy.reload` |
+
+### Amount Input
+
+All amount arguments support human-friendly suffixes (case-insensitive):
+
+| Input | Value |
+|---|---|
+| `1k` | 1,000 |
+| `1.5m` | 1,500,000 |
+| `1b` | 1,000,000,000 |
+| `1t` | 1,000,000,000,000 |
+| `1q` | 1,000,000,000,000,000 |
+| `1qt` | 1,000,000,000,000,000,000 |
+| `1sx` | sextillion |
+| `1sp` | septillion |
+| `1oc` | octillion |
+| `1no` | nonillion |
+| `1dc` | decillion |
+
+Commas and underscores are also stripped: `1,000` and `1_000` both work.
 
 ## PlaceholderAPI
 
@@ -32,9 +56,30 @@ Replace `<currency>` with the currency ID (e.g. `money`, `tokens`).
 |---|---|
 | `%voideconomy_<currency>%` | Your balance (formatted) |
 | `%voideconomy_<currency>_raw%` | Your balance (raw number) |
+| `%voideconomy_<currency>_formatted%` | Your balance (compact: 1.5K, 2.3M, 1.2B, ...) |
 | `%voideconomy_<currency>_top_<rank>_name%` | Name of player at rank N |
 | `%voideconomy_<currency>_top_<rank>_balance%` | Balance of player at rank N (formatted) |
 | `%voideconomy_<currency>_top_<rank>_balance_raw%` | Balance of player at rank N (raw) |
+| `%voideconomy_<currency>_top_<rank>_balance_formatted%` | Balance of player at rank N (compact) |
+
+**Compact suffix table:**
+
+| Suffix | Value |
+|---|---|
+| K | thousand |
+| M | million |
+| B | billion |
+| T | trillion |
+| Q | quadrillion |
+| Qt | quintillion |
+| Sx | sextillion |
+| Sp | septillion |
+| Oc | octillion |
+| No | nonillion |
+| Dc | decillion |
+| Ud | undecillion |
+| Dod | duodecillion |
+| ... | up to vigintillion (Vi) |
 
 ## Adding a Custom Currency
 
@@ -65,7 +110,7 @@ currencies:
       top-empty: "&cNo data found yet."
 ```
 
-Restart the server — `/crystals` and `/crystalstop` are registered automatically.
+Restart the server (or run `/voideconomy reload`) — `/crystals` and `/crystalstop` are registered automatically.
 
 ---
 

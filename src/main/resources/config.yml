@@ -42,7 +42,7 @@ currencies:
 
   tokens:
     display-name: "&bTokens"
-    symbol: "T"
+    symbol: " Tokens"
     command: "tokens"
     default-balance: 0.0
     max-balance: -1

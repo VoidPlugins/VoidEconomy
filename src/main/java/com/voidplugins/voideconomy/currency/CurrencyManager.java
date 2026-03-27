@@ -43,5 +43,11 @@ public class CurrencyManager {
         topCache.put(currencyId, entries);
     }
 
+    public void clear() {
+        byId.clear();
+        byCommand.clear();
+        topCache.clear();
+    }
+
     public record TopEntry(int rank, String playerName, double balance) {}
 }

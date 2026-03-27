@@ -81,17 +81,8 @@ public class CurrencyCommand extends Command {
 
         double amount = 0;
         if (needsAmount) {
-            try {
-                amount = Double.parseDouble(args[2]);
-                if (amount <= 0 && !action.equals("set")) {
-                    sender.sendMessage(msg("invalid-amount"));
-                    return;
-                }
-                if (amount < 0) {
-                    sender.sendMessage(msg("invalid-amount"));
-                    return;
-                }
-            } catch (NumberFormatException e) {
+            amount = MessageUtil.parseAmount(args[2]);
+            if (amount < 0 || (amount == 0 && !action.equals("set"))) {
                 sender.sendMessage(msg("invalid-amount"));
                 return;
             }

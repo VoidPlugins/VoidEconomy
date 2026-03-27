@@ -6,3 +6,24 @@ description: A flexible economy plugin with configurable currencies
 author: VoidPlugins
 softdepend:
   - PlaceholderAPI
+
+commands:
+  voideconomy:
+    description: VoidEconomy main command
+    usage: /voideconomy [reload]
+    permission: voideconomy.info
+  pay:
+    description: Pay another player
+    usage: /pay <player> <currency> <amount>
+    permission: voideconomy.pay
+
+permissions:
+  voideconomy.info:
+    description: View VoidEconomy currencies and commands
+    default: op
+  voideconomy.reload:
+    description: Reload VoidEconomy configuration
+    default: op
+  voideconomy.pay:
+    description: Pay another player
+    default: true
