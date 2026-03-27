@@ -12,6 +12,7 @@ A flexible economy plugin for Spigot/Paper (1.21.1+) with fully configurable cur
 - In-memory player cache with automatic database sync
 - PlaceholderAPI support including compact formatting
 - Player-to-player payments with `/pay`
+- Physical withdraw notes with `/withdraw`, right-click to deposit
 - Developer API with cancellable events
 
 ---
@@ -41,6 +42,34 @@ Replace `<currency>` with the currency command (e.g. `money`, `tokens`).
 | `/pay <player> <currency> <amount>` | Pay another online player | `voideconomy.pay` (default: true) |
 | `/voideconomy` | List all currencies and their commands | `voideconomy.info` (default: op) |
 | `/voideconomy reload` | Reload config and re-register currencies | `voideconomy.reload` (default: op) |
+| `/withdraw <currency> <amount>` | Withdraw currency as a physical item | `voideconomy.<currency>.withdraw` |
+
+---
+
+## Withdraw Notes
+
+`/withdraw money 1.5m` removes `$1,500,000` from your balance and gives you a physical item (configurable per currency). **Right-click** the item to deposit it back.
+
+If your inventory is full, the note is dropped at your feet.
+
+Configure the item per currency under the `withdraw:` section:
+
+```yaml
+currencies:
+  money:
+    withdraw:
+      enabled: true
+      material: PAPER            # Any Bukkit material
+      # custom-model-data: 1001 # Optional, for resource pack support
+      name: "&6{symbol}{amount} &7({formatted}) &6Note"
+      lore:
+        - "&7Currency: &6{display-name}"
+        - "&7Amount: &6{symbol}{amount} &7({formatted})"
+        - ""
+        - "&eRight-click to deposit"
+```
+
+All `{placeholders}` available in messages work in `name` and `lore` too.
 
 ---
 
@@ -152,6 +181,19 @@ currencies:
       top-entry: "&d#{rank} &e{player} &7- &d{amount}{symbol} &7({formatted})"
       top-footer: "&d&m                              "
       top-empty: "&cNo data found yet."
+      withdraw-success: "&aWithdrew &d{amount}{symbol} &7({formatted})&a from your balance."
+      withdraw-not-enough: "&cYou don't have enough &d{display-name}&c to withdraw that amount."
+      withdraw-disabled: "&cWithdraw is disabled for &d{display-name}&c."
+      deposit-success: "&aDeposited &d{amount}{symbol} &7({formatted})&a into your balance."
+    withdraw:
+      enabled: true
+      material: AMETHYST_SHARD
+      name: "&d{amount}{symbol} &7({formatted}) &dCrystal Note"
+      lore:
+        - "&7Currency: &d{display-name}"
+        - "&7Amount: &d{amount}{symbol} &7({formatted})"
+        - ""
+        - "&eRight-click to deposit"
 ```
 
 This automatically registers `/crystals` and `/crystalstop`.
